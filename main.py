@@ -1,15 +1,24 @@
-from flask import Flask, request
+import os
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = Flask(__name__)
-data = ""
+app = FastAPI()
+app.state.stored_data = None
 
-@app.route("/post", methods = ["POST"])
-def receive_data():
-    global data
-    data = request.data.decode("utf-8")
-    print(f"Data received successfully: {data}")
-    return "OK", 200
+class WeatherData(BaseModel):
+    content: dict
+    password: str
 
-@app.route("/get", methods = ["GET"])
-def show_data():
-    return f"<p>{data}</p>"
+@app.post("/send/")
+def send_data(received_data: WeatherData):
+    if received_data.password == os.getenv("METEO_PASSWORD"):
+        app.state.stored_data = received_data.content
+        return {"Status": "Data sent successfully"}
+    else:
+        return {"Error": "Invalid password"}
+
+@app.get("/")
+def view_data():
+    if app.state.stored_data is None:
+        return {"Error": "No data"}
+    return app.state.stored_data
