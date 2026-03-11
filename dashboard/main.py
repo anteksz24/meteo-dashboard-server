@@ -22,6 +22,7 @@ class DataframeRenderer:
             if request.status_code == 200:
                 data = json.loads(request.text)
                 timestamp = data["DT"]
+                data.pop("ID")
                 data.pop("DT")
                 keys_list = list(data.keys())
                 values_list = list(data.values())
