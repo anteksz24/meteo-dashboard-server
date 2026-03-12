@@ -11,7 +11,7 @@ app = FastAPI()
 @app.get("/")
 def get_data(db: Session = Depends(get_database_session)):
     try:
-        result = db.execute(text('SELECT row_to_json(meteo_data) FROM meteo_data ORDER BY "ID" DESC LIMIT 1'))
+        result = db.execute(text('SELECT row_to_json(meteo_data) FROM meteo_data ORDER BY "DT" DESC LIMIT 1'))
         row = result.fetchone()
         return row[0] if row else Response(status_code = status.HTTP_404_NOT_FOUND)
     except:

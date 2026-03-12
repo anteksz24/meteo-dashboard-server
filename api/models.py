@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, TIMESTAMP
 from database import Base
 
 class MeteoDataModel(Base):
@@ -38,4 +38,4 @@ class MeteoDataModel(Base):
     PAAVG1M = Column(Float)
     EXTDC = Column(Float)
     STATUS = Column(Integer)
-    DT = Column(String)
+    DT = Column(TIMESTAMP)
