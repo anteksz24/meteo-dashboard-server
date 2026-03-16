@@ -5,6 +5,12 @@ import json
 import sys
 from values import Values
 
+class Measurements:
+    def remove_values(self, measurements, codes):
+        for i in range(0, len(codes)):
+            measurements.pop(codes[i])
+        return measurements
+
 class Connection:
     def get_request(self, endpoint):
         try:
@@ -16,6 +22,7 @@ class DataframeRenderer:
     def __init__(self):
         self.endpoint = sys.argv[1]
         self.connection = Connection()
+        self.measurements = Measurements()
 
     def render_frame(self):
         request = self.connection.get_request(self.endpoint)
@@ -23,8 +30,7 @@ class DataframeRenderer:
             if request.status_code == 200:
                 data = json.loads(request.text)
                 timestamp = data["DT"]
-                data.pop("ID")
-                data.pop("DT")
+                data = self.measurements.remove_values(data, ["ID", "DT", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS"])
                 keys = list(data.keys())
                 keys_descriptions = list(data.keys())
                 values = list(data.values())
