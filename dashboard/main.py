@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import json
 import sys
+from values import Values
 
 class Connection:
     def get_request(self, endpoint):
@@ -24,12 +25,22 @@ class DataframeRenderer:
                 timestamp = data["DT"]
                 data.pop("ID")
                 data.pop("DT")
-                keys_list = list(data.keys())
-                values_list = list(data.values())
+                keys = list(data.keys())
+                keys_descriptions = list(data.keys())
+                values = list(data.values())
+                values_units = list(data.values())
+
+                for i in range(0, len(keys)):
+                    if list(data.keys())[i] in list(Values.code_descriptions.keys()):
+                        keys_descriptions[i] = Values.code_descriptions[keys[i]]
+
+                for i in range(0, len(values)):
+                    values_units[i] = str(values[i]) + Values.code_units[keys[i]]
+
                 dataframe = pd.DataFrame(
                     {
-                        "Key": keys_list,
-                        "Value": values_list,
+                        "Key": keys_descriptions,
+                        "Value": values_units,
                     }
                 )
                 st.dataframe(dataframe, hide_index = True)
