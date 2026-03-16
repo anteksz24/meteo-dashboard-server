@@ -6,5 +6,5 @@ st.set_page_config(
 )
 
 with st.spinner("Loading page..."):
-    pg = st.navigation([st.Page("measurements.py")], position = "top")
+    pg = st.navigation([st.Page("overview.py"), st.Page("measurements.py")], position = "top")
     pg.run()
