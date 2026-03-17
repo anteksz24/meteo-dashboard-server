@@ -29,13 +29,13 @@ class MetricRenderer:
     def render_metrics(self):
         temperature, humidity = st.columns(2)
         temperature_surface, pressure = st.columns(2)
-        wind_speed, dew_point_temperature = st.columns(2)
+        dew_point_temperature, wind_speed = st.columns(2)
         temperature.metric("Temperature", self.get_value_unit("TAAVG1M"), chart_data = self.get_average_data_list("AVG_TAAVG1M"), border = True)
         humidity.metric("Humidity", self.get_value_unit("RHAVG1M"), chart_data = self.get_average_data_list("AVG_RHAVG1M"), border = True)
         temperature_surface.metric("Temperature at ground surface", self.get_value_unit("TG2"), chart_data = self.get_average_data_list("AVG_TG2"), border = True)
         pressure.metric("Atmospheric pressure", self.get_value_unit("PAAVG1M"), chart_data = self.get_average_data_list("AVG_PAAVG1M"), border = True)
-        wind_speed.metric("Wind speed", self.get_value_unit("WS"), chart_data = self.get_average_data_list("AVG_WS"), border = True)
         dew_point_temperature.metric("Dew point temperature", self.get_value_unit("DPAVG1M"), chart_data = self.get_average_data_list("AVG_DPAVG1M"), border = True)
+        wind_speed.metric("Wind speed", self.get_value_unit("WS"), chart_data = self.get_average_data_list("AVG_WS"), border = True)
 
 renderer = MetricRenderer()
 renderer.render_metrics()
