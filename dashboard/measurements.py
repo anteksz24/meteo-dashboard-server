@@ -20,7 +20,7 @@ class Connection:
 
 class DataframeRenderer:
     def __init__(self):
-        self.endpoint = sys.argv[1]
+        self.endpoint = sys.argv[1] + "/latest/"
         self.connection = Connection()
         self.measurements = Measurements()
 
