@@ -33,7 +33,7 @@ def get_average_data(db: Session = Depends(get_database_session)):
             row_to_json(t)
         FROM (
             SELECT
-                EXTRACT(HOUR FROM "DT") AS "HOUR",
+                DATE_TRUNC('hour', "DT") AS "DT_HOUR",
                 ROUND(AVG("TAAVG1M")::NUMERIC, 1) AS "AVG_TAAVG1M",
                 ROUND(AVG("RHAVG1M")::NUMERIC, 0) AS "AVG_RHAVG1M",
                 ROUND(AVG("DPAVG1M")::NUMERIC, 1) AS "AVG_DPAVG1M",
@@ -65,9 +65,9 @@ def get_average_data(db: Session = Depends(get_database_session)):
             WHERE
                 "DT" >= NOW() - INTERVAL '24 hours'
             GROUP BY
-                EXTRACT(HOUR FROM "DT")
+                "DT_HOUR"
             ORDER BY
-                "HOUR"
+                "DT_HOUR"
         ) t;
     """)
     query_result = db.execute(query)
