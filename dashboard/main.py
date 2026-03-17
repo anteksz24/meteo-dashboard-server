@@ -6,5 +6,7 @@ st.set_page_config(
 )
 
 with st.spinner("Loading page..."):
-    pg = st.navigation([st.Page("overview.py"), st.Page("measurements.py")], position = "top")
+    pg = st.navigation(
+        [st.Page("overview.py", title = "Overview", icon = ":material/bar_chart:", default = True), 
+         st.Page("measurements.py", title = "Measurements", icon = ":material/thermometer:")], position = "top")
     pg.run()

@@ -1,62 +1,21 @@
-import streamlit as st
-import pandas as pd
-import requests
-import json
-import sys
-from values import Values
+import requests, json, sys, pandas as pd, streamlit as st
+from formatters import Formatters
 
-class Measurements:
-    def remove_values(self, measurements, codes):
-        for i in range(0, len(codes)):
-            measurements.pop(codes[i])
-        return measurements
+latest_data = json.loads(requests.get(sys.argv[1] + "/latest/").text)
+f = Formatters()
 
-class Connection:
-    def get_request(self, endpoint):
-        try:
-            return requests.get(url = endpoint)
-        except requests.exceptions.RequestException:
-            return None
+def render_frame():
+    timestamp = latest_data["DT"]
+    data = f.remove_values(latest_data, ["ID", "DT", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS"])
 
-class DataframeRenderer:
-    def __init__(self):
-        self.endpoint = sys.argv[1] + "/latest/"
-        self.connection = Connection()
-        self.measurements = Measurements()
-
-    def render_frame(self):
-        request = self.connection.get_request(self.endpoint)
-        if request is not None:
-            if request.status_code == 200:
-                data = json.loads(request.text)
-                timestamp = data["DT"]
-                data = self.measurements.remove_values(data, ["ID", "DT", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS"])
-                keys = list(data.keys())
-                keys_descriptions = list(data.keys())
-                values = list(data.values())
-                values_units = list(data.values())
-
-                for i in range(0, len(keys)):
-                    if list(data.keys())[i] in list(Values.code_descriptions.keys()):
-                        keys_descriptions[i] = Values.code_descriptions[keys[i]]
-
-                for i in range(0, len(values)):
-                    values_units[i] = str(values[i]) + Values.code_units[keys[i]]
-
-                dataframe = pd.DataFrame(
-                    {
-                        "Key": keys_descriptions,
-                        "Value": values_units,
-                    }
-                )
-                st.dataframe(dataframe, hide_index = True)
-                st.write("**Last data update:** ", timestamp)   
-            elif request.status_code == 404:
-                st.error("No data in API.")
-            else:
-                st.error("An unknown error occurred.")
-        else:
-            st.error("Cannot connect to API.")
+    dataframe = pd.DataFrame(
+        {
+            "Parameter": f.get_codes_descriptions(list(data.keys())),
+            "Value": f.get_values(data, list(data.keys())),
+        }
+    )
     
-renderer = DataframeRenderer()
-renderer.render_frame()
+    st.dataframe(dataframe, hide_index = True)
+    st.write("**Last data update:** ", timestamp)   
+
+render_frame()

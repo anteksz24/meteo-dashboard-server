@@ -1,41 +1,28 @@
-import requests
-import sys
-import json
-import streamlit as st
-from values import Values
+import requests, sys, json, streamlit as st
+from formatters import Formatters
 
-class Connection:
-    def get_request(self, endpoint):
-        try:
-            return requests.get(url = endpoint)
-        except requests.exceptions.RequestException:
-            return None
+latest_data = json.loads(requests.get(sys.argv[1] + "/latest/").text)
+average_data = json.loads(requests.get(sys.argv[1] + "/average/").text)
+f = Formatters()
 
-class MetricRenderer:
-    def __init__(self):
-        connection = Connection()
-        self.data = json.loads(connection.get_request(sys.argv[1] + "/latest/").text)
-        self.data_average = json.loads(connection.get_request(sys.argv[1] + "/average/").text)
+def render_metrics():
+        metrics = [
+                ("Temperature", "TAAVG1M"),
+                ("Humidity", "RHAVG1M"),
+                ("Temperature at ground surface", "TG2"),
+                ("Atmospheric pressure", "PAAVG1M"),
+                ("Temperature 5 cm above grund", "TG1"),
+                ("Wind speed", "WS")
+        ]
 
-    def get_value_unit(self, key):
-        return str(self.data[key]) + Values.code_units[key]
-    
-    def get_average_data_list(self, code):
-        average_data_list = []
-        for i in range(0, len(self.data_average)):
-            average_data_list.append(self.data_average[i][code])
-        return average_data_list
+        columns = st.columns(2)
+        for i in range(0, len(metrics)):
+                column = columns[i % 2]
+                column.metric(
+                        label = metrics[i][0],
+                        value = f.get_values(latest_data, metrics[i][1]),
+                        chart_data = f.get_average_data(average_data, "AVG_" + metrics[i][1]),
+                        border = True
+                )
 
-    def render_metrics(self):
-        temperature, humidity = st.columns(2)
-        temperature_surface, pressure = st.columns(2)
-        dew_point_temperature, wind_speed = st.columns(2)
-        temperature.metric("Temperature", self.get_value_unit("TAAVG1M"), chart_data = self.get_average_data_list("AVG_TAAVG1M"), border = True)
-        humidity.metric("Humidity", self.get_value_unit("RHAVG1M"), chart_data = self.get_average_data_list("AVG_RHAVG1M"), border = True)
-        temperature_surface.metric("Temperature at ground surface", self.get_value_unit("TG2"), chart_data = self.get_average_data_list("AVG_TG2"), border = True)
-        pressure.metric("Atmospheric pressure", self.get_value_unit("PAAVG1M"), chart_data = self.get_average_data_list("AVG_PAAVG1M"), border = True)
-        dew_point_temperature.metric("Dew point temperature", self.get_value_unit("DPAVG1M"), chart_data = self.get_average_data_list("AVG_DPAVG1M"), border = True)
-        wind_speed.metric("Wind speed", self.get_value_unit("WS"), chart_data = self.get_average_data_list("AVG_WS"), border = True)
-
-renderer = MetricRenderer()
-renderer.render_metrics()
+render_metrics()
