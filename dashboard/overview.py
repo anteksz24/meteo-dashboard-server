@@ -11,7 +11,7 @@ def render_metrics():
                 ("Humidity", "RHAVG1M"),
                 ("Temperature at ground surface", "TG2"),
                 ("Atmospheric pressure", "PAAVG1M"),
-                ("Temperature 5 cm above grund", "TG1"),
+                ("Temperature 5 cm above ground", "TG1"),
                 ("Wind speed", "WS")
         ]
 
