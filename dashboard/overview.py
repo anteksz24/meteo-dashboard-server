@@ -21,7 +21,7 @@ def render_metrics():
                 column.metric(
                         label = metrics[i][0],
                         value = f.get_values(latest_data, metrics[i][1]),
-                        chart_data = f.get_average_data(average_data, "AVG_" + metrics[i][1]),
+                        chart_data = f.get_values(average_data, "AVG_" + metrics[i][1]),
                         border = True
                 )
 
