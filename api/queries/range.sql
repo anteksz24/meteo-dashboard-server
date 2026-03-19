@@ -10,4 +10,4 @@ AND
     :end
 ORDER BY
     "DT"
-DESC
+ASC
