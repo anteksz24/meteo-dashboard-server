@@ -11,7 +11,7 @@ def render_frame():
     dataframe = pd.DataFrame(
         {
             "Parameter": f.get_codes_descriptions(list(data.keys())),
-            "Value": f.get_values(data, list(data.keys())),
+            "Value": f.get_values_from_dict(data, list(data.keys())).get_value_unit(),
         }
     )
     

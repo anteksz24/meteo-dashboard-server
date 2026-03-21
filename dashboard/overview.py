@@ -20,8 +20,8 @@ def render_metrics():
                 column = columns[i % 2]
                 column.metric(
                         label = metrics[i][0],
-                        value = f.get_values(latest_data, metrics[i][1]),
-                        chart_data = f.get_values(average_data, "AVG_" + metrics[i][1]),
+                        value = f.get_values_from_dict(latest_data, metrics[i][1]).get_value_unit(),
+                        chart_data = f.get_values_from_list(average_data, "AVG_" + metrics[i][1]).value,
                         border = True
                 )
 

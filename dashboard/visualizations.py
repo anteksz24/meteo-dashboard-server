@@ -19,8 +19,8 @@ if st.button("Generate chart"):
         st.error("Select parameter from the list.")
     else:
         range_data = json.loads(requests.get(sys.argv[1] + f"/range?start={start_date}&end={end_date}").text)
-        timestamps = f.get_values(range_data, "DT", False)
-        measurements = f.get_values(range_data, code, False)
+        timestamps = f.get_values_from_list(range_data, "DT").value
+        measurements = f.get_values_from_list(range_data, code).value
 
         dataframe = pd.DataFrame({"DT": timestamps, code: measurements}).set_index("DT")
 
