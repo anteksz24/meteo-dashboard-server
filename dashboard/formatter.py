@@ -1,4 +1,5 @@
 from constants import MeteoConstants
+import streamlit as st
 
 class ValueWithUnit:
     def __init__(self, value, unit):
@@ -37,9 +38,15 @@ class Formatter:
             return ValueWithUnit(values, units)
 
     def remove_values(self, data, codes):
-        for code in codes:
-            data.pop(code)
-        return data
+        data_values_removed = data
+        if isinstance(data, dict):
+            for code in codes:
+                data_values_removed.pop(code)
+            return data_values_removed
+        else:
+            for code in codes:
+                data_values_removed.remove(code)
+            return data_values_removed
 
     def get_codes_descriptions(self, codes):
         codes_descriptions = [MeteoConstants.CODES_INFO[code]["description"] for code in codes]

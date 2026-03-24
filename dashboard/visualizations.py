@@ -7,7 +7,7 @@ formatter = Formatter()
 
 code = st.selectbox(
     label = "Parameter",
-    options = MeteoConstants.CODES_INFO.keys(),
+    options = formatter.remove_values(list(MeteoConstants.CODES_INFO.keys()), ["ID", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS", "DT", "DT_BIN"]),
     format_func = lambda x: MeteoConstants.CODES_INFO[x]["description"],
     index = None
 )
