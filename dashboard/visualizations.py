@@ -1,14 +1,14 @@
 import requests, sys, json, streamlit as st, pandas as pd
-from formatters import Formatters
-from values import Values
+from formatter import Formatter
+from constants import MeteoConstants
 from datetime import datetime, timedelta
 
-f = Formatters()
+formatter = Formatter()
 
 code = st.selectbox(
     label = "Parameter",
-    options = Values.code_descriptions.keys(),
-    format_func = lambda x: Values.code_descriptions[x],
+    options = MeteoConstants.CODE_DESCRIPTIONS.keys(),
+    format_func = lambda x: MeteoConstants.CODE_DESCRIPTIONS[x],
     index = None
 )
 start_date = st.date_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
@@ -19,8 +19,8 @@ if st.button("Generate chart"):
         st.error("Select parameter from the list.")
     else:
         range_data = json.loads(requests.get(sys.argv[1] + f"/range?start={start_date}&end={end_date}").text)
-        timestamps = f.get_values_from_list(range_data, "DT").value
-        measurements = f.get_values_from_list(range_data, code).value
+        timestamps = formatter.get_values_from_list(range_data, "DT").value
+        measurements = formatter.get_values_from_list(range_data, code).value
 
         dataframe = pd.DataFrame({"DT": timestamps, code: measurements}).set_index("DT")
 

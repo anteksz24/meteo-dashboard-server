@@ -1,5 +1,5 @@
-class Values:
-    code_descriptions = {
+class MeteoConstants:
+    CODE_DESCRIPTIONS = {
         "ID": "Primary ID number",
         "S": "Weather station code",
         "RNAME": "Record name",
@@ -37,7 +37,7 @@ class Values:
         "DT": "Datetime"
     }
 
-    code_units = {
+    CODE_UNITS = {
         "ID": "",
         "S": "",
         "RNAME": "",
