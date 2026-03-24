@@ -11,8 +11,8 @@ code = st.selectbox(
     format_func = lambda x: MeteoConstants.CODES_INFO[x]["description"],
     index = None
 )
-start_date = st.date_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
-end_date = st.date_input(label = "End date")
+start_date = st.datetime_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
+end_date = st.datetime_input(label = "End date")
 
 if st.button("Generate chart"):
     if code == None:
