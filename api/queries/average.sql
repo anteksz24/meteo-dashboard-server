@@ -2,7 +2,7 @@ SELECT
     row_to_json(t)
 FROM (
     SELECT
-        DATE_TRUNC('hour', "DT") AS "DT_HOUR",
+        date_bin(INTERVAL '1 minute' * :interval, "DT", 'epoch') AS "DT_BIN",
         ROUND(AVG("TAAVG1M")::NUMERIC, 1) AS "TAAVG1M",
         ROUND(AVG("RHAVG1M")::NUMERIC, 0) AS "RHAVG1M",
         ROUND(AVG("DPAVG1M")::NUMERIC, 1) AS "DPAVG1M",
@@ -32,9 +32,13 @@ FROM (
     FROM
         meteo_data
     WHERE
-        "DT" >= NOW() - INTERVAL '24 hours'
+        "DT"
+	BETWEEN
+		:start
+	AND
+		:end
     GROUP BY
-        "DT_HOUR"
+        "DT_BIN"
     ORDER BY
-        "DT_HOUR"
+        "DT_BIN"
 ) t;

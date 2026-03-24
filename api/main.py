@@ -5,6 +5,7 @@ from models import MeteoDataModel
 from schemas import DataRequestSchema
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
+from datetime import datetime, timedelta
 
 app = FastAPI()
 
@@ -19,6 +20,9 @@ class Query:
 
 q = Query()
 
+def get_yesterday_datetime():
+    return datetime.now() - timedelta(days = 1)
+
 @app.get("/latest/")
 def get_latest_data(limit: int = 1, db: Session = Depends(get_database_session)):
     query_result = db.execute(q.get_query("latest.sql"), {"limit": limit})
@@ -32,8 +36,8 @@ def get_data_in_range(start: str, end: str, db: Session = Depends(get_database_s
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
 
 @app.get("/average/")
-def get_average_data(db: Session = Depends(get_database_session)):
-    query_result = db.execute(q.get_query("average.sql"))
+def get_average_data(interval: int = 60, start: datetime = Depends(get_yesterday_datetime), end: datetime = Depends(datetime.now), db: Session = Depends(get_database_session)):
+    query_result = db.execute(q.get_query("average.sql"), {"interval": interval, "start": start, "end": end})
     measurements = q.extract_query_result(query_result)
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
 
