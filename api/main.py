@@ -36,7 +36,11 @@ def get_data_in_range(start: str, end: str, db: Session = Depends(get_database_s
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
 
 @app.get("/average/")
-def get_average_data(interval: int = 60, start: datetime = Depends(get_yesterday_datetime), end: datetime = Depends(datetime.now), db: Session = Depends(get_database_session)):
+def get_average_data(interval: int = 60, start: datetime = None, end: datetime = None, db: Session = Depends(get_database_session)):
+    if not start:
+        start = datetime.now() - timedelta(days = 1)
+    if not end:
+        end = datetime.now()
     query_result = db.execute(q.get_query("average.sql"), {"interval": interval, "start": start, "end": end})
     measurements = q.extract_query_result(query_result)
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
