@@ -7,8 +7,8 @@ formatter = Formatter()
 
 code = st.selectbox(
     label = "Parameter",
-    options = MeteoConstants.CODE_DESCRIPTIONS.keys(),
-    format_func = lambda x: MeteoConstants.CODE_DESCRIPTIONS[x],
+    options = MeteoConstants.CODES_INFO.keys(),
+    format_func = lambda x: MeteoConstants.CODES_INFO[x]["description"],
     index = None
 )
 start_date = st.date_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
