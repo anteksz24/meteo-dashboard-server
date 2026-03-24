@@ -13,13 +13,18 @@ code = st.selectbox(
 )
 start_date = st.datetime_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
 end_date = st.datetime_input(label = "End date")
+average = st.checkbox(label = "Use average data at set intervals", value = True)
+interval = st.number_input(label = "Interval (minutes)", value = 5, min_value = 1, disabled = not average)
 
 if st.button("Generate chart"):
     if code == None:
         st.error("Select parameter from the list.")
     else:
-        range_data = json.loads(requests.get(sys.argv[1] + f"/range?start={start_date}&end={end_date}").text)
-        timestamps = formatter.get_values_from_list(range_data, "DT").value
+        if not average:
+            range_data = json.loads(requests.get(sys.argv[1] + f"/range?start={start_date}&end={end_date}").text)
+        else:
+            range_data = json.loads(requests.get(sys.argv[1] + f"/average?start={start_date}&end={end_date}&interval={interval}").text)
+        timestamps = formatter.get_values_from_list(range_data, "DT" if not average else "DT_BIN").value
         measurements = formatter.get_values_from_list(range_data, code).value
 
         dataframe = pd.DataFrame({"DT": timestamps, code: measurements}).set_index("DT")

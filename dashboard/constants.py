@@ -34,7 +34,8 @@ class MeteoConstants:
         ("PAAVG1M", "Atmospheric pressure (1 minute average)", "hPa", True),
         ("EXTDC", "External DC voltage", "V", True),
         ("STATUS", "Unit status", "", None),
-        ("DT", "Datetime", "", None)
+        ("DT", "Datetime", "", None),
+        ("DT_BIN", "Datetime at set interval", "", None)
     ]
 
     CODES_INFO = {
