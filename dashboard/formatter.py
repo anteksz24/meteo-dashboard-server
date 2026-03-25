@@ -49,5 +49,7 @@ class Formatter:
             return data_values_removed
 
     def get_codes_descriptions(self, codes):
-        codes_descriptions = [MeteoConstants.CODES_INFO[code]["description"] for code in codes]
-        return codes_descriptions
+        if isinstance(codes, list):
+            return [MeteoConstants.CODES_INFO[code]["description"] for code in codes]
+        else:
+            return MeteoConstants.CODES_INFO[codes]["description"]

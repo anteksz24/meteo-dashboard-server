@@ -1,9 +1,9 @@
 class MeteoConstants:
     __DATA = [
-        ("ID", "Primary ID number", "", None),
-        ("S", "Weather station code", "", None),
-        ("RNAME", "Record name", "", None),
-        ("PW15M", "Present weather (WMO code table 4680)", "", None),
+        ("ID", "Primary ID number", "", False),
+        ("S", "Weather station code", "", False),
+        ("RNAME", "Record name", "", False),
+        ("PW15M", "Present weather (WMO code table 4680)", "", False),
         ("VIS", "Visibility", "m", True),
         ("TAAVG1M", "Air temperature (1 minute average)", "°C", False),
         ("RHAVG1M", "Relative humidity (1 minute average)", "%", False),
@@ -33,9 +33,9 @@ class MeteoConstants:
         ("WSMIN2M", "Wind speed (2 minutes minimum)", "m/s", True),
         ("PAAVG1M", "Atmospheric pressure (1 minute average)", "hPa", True),
         ("EXTDC", "External DC voltage", "V", True),
-        ("STATUS", "Unit status", "", None),
-        ("DT", "Datetime", "", None),
-        ("DT_BIN", "Datetime at set interval", "", None)
+        ("STATUS", "Unit status", "", False),
+        ("DT", "Datetime", "", False),
+        ("DT_BIN", "Datetime at set interval", "", False)
     ]
 
     CODES_INFO = {
@@ -46,4 +46,4 @@ class MeteoConstants:
     @staticmethod
     def get_unit_space_by_unit(unit):
         unit_space = [data["unit_space"] for data in MeteoConstants.CODES_INFO.values() if unit == data["unit"]]
-        return True if unit_space[0] == True else False
+        return False if not unit_space else unit_space[0]
