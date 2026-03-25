@@ -1,8 +1,7 @@
-import requests, sys, json, streamlit as st, pandas as pd
+import requests, sys, json, streamlit as st, pandas as pd, altair as alt
 from utils.formatter import Formatter
 from utils.constants import MeteoConstants
 from datetime import datetime, timedelta
-import altair as alt
 
 formatter = Formatter()
 
@@ -13,9 +12,12 @@ codes = st.multiselect(
 )
 start_date = st.datetime_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
 end_date = st.datetime_input(label = "End date")
-average = st.checkbox(label = "Use average data at set intervals", value = True)
-interval = st.number_input(label = "Interval (minutes)", value = 5, min_value = 1, disabled = not average)
-
+advanced_options = st.expander(label = "Advanced options")
+with advanced_options:
+    y_axis_zero = st.checkbox(label = "Start Y axis at 0 value", value = False)
+    average = st.checkbox(label = "Use average data at set intervals", value = True)
+    interval = st.number_input(label = "Interval (minutes)", value = 5, min_value = 1, disabled = not average)
+    
 if st.button("Generate chart"):
     if not codes:
         st.error("Select at least one parameter from the list.")
@@ -31,6 +33,16 @@ if st.button("Generate chart"):
         for code in range(len(codes)):
             data_list = [measurements[row][code] for row in range(len(measurements))]
             dataframe_values_dict[formatter.get_codes_descriptions(codes[code])] = data_list
-
-        dataframe = pd.DataFrame(dataframe_values_dict).set_index("DT")
-        st.line_chart(dataframe)
+        dataframe = pd.DataFrame(dataframe_values_dict).melt(id_vars = "DT")
+        
+        chart = (
+            alt.Chart(dataframe)
+            .mark_line()
+            .encode(
+                x = alt.X("DT:T", title = ""),
+                y = alt.Y("value:Q", title = f"{formatter.get_codes_descriptions(codes[0])} ({MeteoConstants.CODES_INFO[codes[0]]["unit"]})" if len(codes) == 1 else "").scale(zero = y_axis_zero),
+                color = alt.Color("variable:N", title = "Parameters", legend = alt.Legend(orient = "bottom"))
+            )
+        )
+        
+        st.altair_chart(chart)
