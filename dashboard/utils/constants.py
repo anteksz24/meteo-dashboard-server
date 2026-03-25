@@ -1,9 +1,9 @@
 class MeteoConstants:
     __DATA = [
-        ("ID", "Primary ID number", "", False),
-        ("S", "Weather station code", "", False),
-        ("RNAME", "Record name", "", False),
-        ("PW15M", "Present weather (WMO code table 4680)", "", False),
+        ("ID", "Primary ID number", "", None),
+        ("S", "Weather station code", "", None),
+        ("RNAME", "Record name", "", None),
+        ("PW15M", "Present weather (WMO code table 4680)", "", None),
         ("VIS", "Visibility", "m", True),
         ("TAAVG1M", "Air temperature (1 minute average)", "°C", False),
         ("RHAVG1M", "Relative humidity (1 minute average)", "%", False),
@@ -33,9 +33,9 @@ class MeteoConstants:
         ("WSMIN2M", "Wind speed (2 minutes minimum)", "m/s", True),
         ("PAAVG1M", "Atmospheric pressure (1 minute average)", "hPa", True),
         ("EXTDC", "External DC voltage", "V", True),
-        ("STATUS", "Unit status", "", False),
-        ("DT", "Datetime", "", False),
-        ("DT_BIN", "Datetime at set interval", "", False)
+        ("STATUS", "Unit status", "", None),
+        ("DT", "Datetime", "", None),
+        ("DT_BIN", "Datetime at set interval", "", None)
     ]
 
     CODES_INFO = {

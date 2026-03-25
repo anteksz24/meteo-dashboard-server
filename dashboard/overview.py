@@ -1,5 +1,5 @@
 import requests, sys, json, streamlit as st
-from formatter import Formatter
+from utils.formatter import Formatter
 
 latest_data = json.loads(requests.get(sys.argv[1] + "/latest/").text)
 average_data = json.loads(requests.get(sys.argv[1] + "/average/").text)
@@ -20,8 +20,8 @@ def render_metrics():
         column = columns[i % 2]
         column.metric(
             label = metrics[i][0],
-            value = formatter.get_values_from_dict(latest_data, metrics[i][1]).value_unit,
-            chart_data = formatter.get_values_from_list(average_data, metrics[i][1]).value,
+            value = formatter.get_values(latest_data, [metrics[i][1]]).values_units[0][0],
+            chart_data = [value[0] for value in formatter.get_values(average_data, [metrics[i][1]]).values],
             border = True
         )
 

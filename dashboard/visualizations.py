@@ -1,6 +1,6 @@
 import requests, sys, json, streamlit as st, pandas as pd
-from formatter import Formatter
-from constants import MeteoConstants
+from utils.formatter import Formatter
+from utils.constants import MeteoConstants
 from datetime import datetime, timedelta
 import altair as alt
 
@@ -8,7 +8,7 @@ formatter = Formatter()
 
 codes = st.multiselect(
     label = "Parameters",
-    options = formatter.remove_values(list(MeteoConstants.CODES_INFO.keys()), ["ID", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS", "DT", "DT_BIN"]),
+    options = formatter.remove_codes_from_code_list(list(MeteoConstants.CODES_INFO.keys()), ["ID", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS", "DT", "DT_BIN"]),
     format_func = lambda x: MeteoConstants.CODES_INFO[x]["description"]
 )
 start_date = st.datetime_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
@@ -24,10 +24,10 @@ if st.button("Generate chart"):
             range_data = json.loads(requests.get(sys.argv[1] + f"/range?start={start_date}&end={end_date}").text)
         else:
             range_data = json.loads(requests.get(sys.argv[1] + f"/average?start={start_date}&end={end_date}&interval={interval}").text)
-        timestamps = formatter.get_values_from_list(range_data, "DT" if not average else "DT_BIN").value
-        measurements = formatter.get_values_from_list(range_data, codes).value
+        timestamps = formatter.get_values(range_data, ["DT"] if not average else ["DT_BIN"]).values
+        measurements = formatter.get_values(range_data, codes).values
 
-        dataframe_values_dict = {"DT": timestamps}
+        dataframe_values_dict = {"DT": [timestamp[0] for timestamp in timestamps]}
         for code in range(len(codes)):
             data_list = [measurements[row][code] for row in range(len(measurements))]
             dataframe_values_dict[formatter.get_codes_descriptions(codes[code])] = data_list

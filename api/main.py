@@ -16,23 +16,20 @@ class Query:
 
     def extract_query_result(self, query_result):
         data_list = [row[0] for row in query_result]
-        return data_list[0] if len(data_list) == 1 else data_list
+        return data_list
 
-q = Query()
-
-def get_yesterday_datetime():
-    return datetime.now() - timedelta(days = 1)
+query = Query()
 
 @app.get("/latest/")
 def get_latest_data(limit: int = 1, db: Session = Depends(get_database_session)):
-    query_result = db.execute(q.get_query("latest.sql"), {"limit": limit})
-    measurements = q.extract_query_result(query_result)
+    query_result = db.execute(query.get_query("latest.sql"), {"limit": limit})
+    measurements = query.extract_query_result(query_result)
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
 
 @app.get("/range/")
 def get_data_in_range(start: str, end: str, db: Session = Depends(get_database_session)):
-    query_result = db.execute(q.get_query("range.sql"), {"start": start, "end": end})
-    measurements = q.extract_query_result(query_result)
+    query_result = db.execute(query.get_query("range.sql"), {"start": start, "end": end})
+    measurements = query.extract_query_result(query_result)
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
 
 @app.get("/average/")
@@ -41,8 +38,8 @@ def get_average_data(interval: int = 60, start: datetime = None, end: datetime =
         start = datetime.now() - timedelta(days = 1)
     if not end:
         end = datetime.now()
-    query_result = db.execute(q.get_query("average.sql"), {"interval": interval, "start": start, "end": end})
-    measurements = q.extract_query_result(query_result)
+    query_result = db.execute(query.get_query("average.sql"), {"interval": interval, "start": start, "end": end})
+    measurements = query.extract_query_result(query_result)
     return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
 
 @app.post("/post/")
