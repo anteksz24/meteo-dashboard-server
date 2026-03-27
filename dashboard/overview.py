@@ -21,7 +21,8 @@ def render_metrics():
         column.metric(
             label = metrics[i][0],
             value = formatter.get_values(latest_data, [metrics[i][1]]).values_units[0][0],
-            chart_data = [value[0] for value in formatter.get_values(average_data, [metrics[i][1]]).values],
+            chart_data = [value[0] for value in formatter.get_values(average_data, [metrics[i][1]]).values 
+                          if value[0] is not None],
             border = True
         )
 
