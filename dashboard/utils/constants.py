@@ -32,6 +32,7 @@ class MeteoConstants:
         ("WSMAX2M", "Wind speed (2 minutes maximum)", "m/s", True),
         ("WSMIN2M", "Wind speed (2 minutes minimum)", "m/s", True),
         ("PAAVG1M", "Atmospheric pressure (1 minute average)", "hPa", True),
+        ("PAAVG1M_ADJ", "Atmospheric pressure (reduced to sea level)", "hPa", True),
         ("EXTDC", "External DC voltage", "V", True),
         ("STATUS", "Unit status", "", None),
         ("DT", "Datetime", "", None),

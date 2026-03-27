@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP
+from sqlalchemy.ext.hybrid import hybrid_property
 from database import Base
 
 class MeteoDataModel(Base):
@@ -36,6 +37,11 @@ class MeteoDataModel(Base):
     WSMAX2M = Column(Float)
     WSMIN2M = Column(Float)
     PAAVG1M = Column(Float)
+    PAAVG1M_ADJ = Column(Float)
     EXTDC = Column(Float)
     STATUS = Column(Integer)
     DT = Column(TIMESTAMP)
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.PAAVG1M_ADJ = self.PAAVG1M + 11.4
