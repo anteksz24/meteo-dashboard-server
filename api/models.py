@@ -43,4 +43,4 @@ class MeteoDataModel(Base):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.PAAVG1M_ADJ = self.PAAVG1M + 11.4
+        self.PAAVG1M_ADJ = round(self.PAAVG1M + 11.4, 2)
