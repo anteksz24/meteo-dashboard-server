@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP
-from sqlalchemy.ext.hybrid import hybrid_property
 from database import Base
 
 class MeteoDataModel(Base):
