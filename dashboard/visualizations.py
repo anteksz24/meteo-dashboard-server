@@ -8,8 +8,7 @@ formatter = Formatter()
 codes = st.multiselect(
     label = "Parameters",
     options = formatter.remove_codes_from_code_list(list(MeteoConstants.CODES_INFO.keys()), ["ID", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS", "DT", "DT_BIN"]),
-    format_func = lambda x: MeteoConstants.CODES_INFO[x]["description"],
-    
+    format_func = lambda x: MeteoConstants.CODES_INFO[x]["description"]
 )
 start_date = st.datetime_input(label = "Start date", value = datetime.today() - timedelta(days = 1))
 end_date = st.datetime_input(label = "End date")
