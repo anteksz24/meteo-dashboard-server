@@ -5,8 +5,8 @@ latest_data = json.loads(requests.get(sys.argv[1] + "/latest/").text)
 formatter = Formatter()
 
 def render_frame():
-    timestamp = latest_data[0]["DT"]
-    data = formatter.remove_values_from_data_list(latest_data, ["ID", "DT", "S", "RNAME", "PW15M", "VIS", "PRSUM1H", "EXTDC", "STATUS"])
+    timestamp = latest_data[0]["datetime"]
+    data = formatter.remove_values_from_data_list(latest_data, ["id", "datetime"])
 
     dataframe = pd.DataFrame(
         {

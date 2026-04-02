@@ -7,12 +7,12 @@ formatter = Formatter()
 
 def render_metrics():
     metrics = [
-        ("Temperature", "TAAVG1M"),
-        ("Humidity", "RHAVG1M"),
-        ("Temperature at ground surface", "TG2"),
-        ("Atmospheric pressure", "PAAVG1M_ADJ"),
-        ("Temperature 5 cm above ground", "TG1"),
-        ("Wind speed", "WS")
+        ("Temperature", "air_temp_avg_1m"),
+        ("Humidity", "humidity_avg_1m"),
+        ("Temperature at ground surface", "air_temp_surface_avg_1m"),
+        ("Atmospheric pressure", "pressure_adj_avg_1m"),
+        ("Temperature 5 cm above ground", "air_temp_5cm_above_ground_avg_1m"),
+        ("Wind speed", "wind_speed_inst")
     ]
 
     columns = st.columns(2)

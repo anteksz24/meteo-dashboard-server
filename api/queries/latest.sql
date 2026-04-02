@@ -3,7 +3,7 @@ SELECT
 FROM
     meteo_data
 ORDER BY
-    "DT"
+    "datetime"
 DESC 
 LIMIT 
     :limit

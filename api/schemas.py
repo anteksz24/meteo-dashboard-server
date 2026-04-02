@@ -5,10 +5,6 @@ class DataRequestSchema(BaseModel):
     password: str
 
 class MeteoDataSchema(BaseModel):
-    S: str
-    RNAME: str
-    PW15M: str
-    VIS: str
     TAAVG1M: float
     RHAVG1M: float
     DPAVG1M: float
@@ -36,6 +32,4 @@ class MeteoDataSchema(BaseModel):
     WSMAX2M: float
     WSMIN2M: float
     PAAVG1M: float
-    EXTDC: float
-    STATUS: int
     DT: str

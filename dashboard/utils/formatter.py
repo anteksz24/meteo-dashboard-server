@@ -25,7 +25,7 @@ class Formatter:
         units = []
         for measurement in data:
             values.append([measurement[code] for code in codes])
-            units.append([MeteoConstants.CODES_INFO[code]["unit"] for code in codes])
+            units.append([MeteoConstants.CONSTS_INFO[code]["unit"] for code in codes])
         return ValuesWithUnits(values, units)
 
     def remove_values_from_data_list(self, data, codes):
@@ -43,6 +43,6 @@ class Formatter:
 
     def get_codes_descriptions(self, codes):
         if isinstance(codes, list):
-            return [MeteoConstants.CODES_INFO[code]["description"] for code in codes]
+            return [MeteoConstants.CONSTS_INFO[code]["description"] for code in codes]
         else:
-            return MeteoConstants.CODES_INFO[codes]["description"]
+            return MeteoConstants.CONSTS_INFO[codes]["description"]

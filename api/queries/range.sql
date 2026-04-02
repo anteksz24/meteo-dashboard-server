@@ -3,11 +3,11 @@ SELECT
 FROM
     meteo_data
 WHERE
-    "DT"
+    "datetime"
 BETWEEN
     :start
 AND
     :end
 ORDER BY
-    "DT"
+    "datetime"
 ASC

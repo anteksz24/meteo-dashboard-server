@@ -2,44 +2,45 @@ SELECT
     row_to_json(t)
 FROM (
     SELECT
-        date_bin(INTERVAL '1 minute' * :interval, "DT", 'epoch') AS "DT_BIN",
-        ROUND(AVG("TAAVG1M")::NUMERIC, 1) AS "TAAVG1M",
-        ROUND(AVG("RHAVG1M")::NUMERIC, 0) AS "RHAVG1M",
-        ROUND(AVG("DPAVG1M")::NUMERIC, 1) AS "DPAVG1M",
-        ROUND(AVG("SRAVG1M")::NUMERIC, 0) AS "SRAVG1M",
-        ROUND(AVG("SDUR1M")::NUMERIC, 0) AS "SDUR1M",
-        ROUND(AVG("SRDSUM1D")::NUMERIC, 0) AS "SRDSUM1D",
-        ROUND(AVG("TAMIN1D")::NUMERIC, 1) AS "TAMIN1D",
-        ROUND(AVG("TAMAX1D")::NUMERIC, 1) AS "TAMAX1D",
-        ROUND(AVG("RHMIN1D")::NUMERIC, 0) AS "RHMIN1D",
-        ROUND(AVG("RHMAX1D")::NUMERIC, 0) AS "RHMAX1D",
-        ROUND(AVG("TG1")::NUMERIC, 1) AS "TG1",
-        ROUND(AVG("TG2")::NUMERIC, 1) AS "TG2",
-        ROUND(AVG("TG3")::NUMERIC, 1) AS "TG3",
-        ROUND(AVG("TG4")::NUMERIC, 1) AS "TG4",
-        ROUND(AVG("TG5")::NUMERIC, 1) AS "TG5",
-        ROUND(AVG("TG6")::NUMERIC, 1) AS "TG6",
-        ROUND(AVG("TG7")::NUMERIC, 1) AS "TG7",
-        ROUND(AVG("WD")::NUMERIC, 0) AS "WD",
-        ROUND(AVG("WS")::NUMERIC, 1) AS "WS",
-        ROUND(AVG("WDAVG2M")::NUMERIC, 0) AS "WDAVG2M",
-        ROUND(AVG("WDMAX2M")::NUMERIC, 0) AS "WDMAX2M",
-        ROUND(AVG("WDMIN2M")::NUMERIC, 0) AS "WDMIN2M",
-        ROUND(AVG("WSAVG2M")::NUMERIC, 1) AS "WSAVG2M",
-        ROUND(AVG("WSMAX2M")::NUMERIC, 1) AS "WSMAX2M",
-        ROUND(AVG("WSMIN2M")::NUMERIC, 1) AS "WSMIN2M",
-        ROUND(AVG("PAAVG1M")::NUMERIC, 1) AS "PAAVG1M",
-        ROUND(AVG("PAAVG1M_ADJ")::NUMERIC, 1) AS "PAAVG1M_ADJ"
+        date_bin(INTERVAL '1 minute' * :interval, "datetime", 'epoch') AS "datetime_bin",
+        ROUND(AVG("air_temp_avg_1m")::NUMERIC, 1) AS "air_temp_avg_1m",
+        ROUND(AVG("humidity_avg_1m")::NUMERIC, 0) AS "humidity_avg_1m",
+        ROUND(AVG("dewpoint_avg_1m")::NUMERIC, 1) AS "dewpoint_avg_1m",
+        ROUND(AVG("precipitation_sum_1h")::NUMERIC, 0) as "precipitation_sum_1h",
+        ROUND(AVG("solar_rad_avg_1m")::NUMERIC, 0) AS "solar_rad_avg_1m",
+        ROUND(AVG("sunshine_dur_1m")::NUMERIC, 0) AS "sunshine_dur_1m",
+        ROUND(AVG("sunshine_dur_sum_1d")::NUMERIC, 0) AS "sunshine_dur_sum_1d",
+        ROUND(AVG("air_temp_min_1d")::NUMERIC, 1) AS "air_temp_min_1d",
+        ROUND(AVG("air_temp_max_1d")::NUMERIC, 1) AS "air_temp_max_1d",
+        ROUND(AVG("humidity_min_1d")::NUMERIC, 0) AS "humidity_min_1d",
+        ROUND(AVG("humidity_max_1d")::NUMERIC, 0) AS "humidity_max_1d",
+        ROUND(AVG("air_temp_5cm_above_ground_avg_1m")::NUMERIC, 1) AS "air_temp_5cm_above_ground_avg_1m",
+        ROUND(AVG("air_temp_surface_avg_1m")::NUMERIC, 1) AS "air_temp_surface_avg_1m",
+        ROUND(AVG("ground_temp_5cm_avg_1m")::NUMERIC, 1) AS "ground_temp_5cm_avg_1m",
+        ROUND(AVG("ground_temp_10cm_avg_1m")::NUMERIC, 1) AS "ground_temp_10cm_avg_1m",
+        ROUND(AVG("ground_temp_20cm_avg_1m")::NUMERIC, 1) AS "ground_temp_20cm_avg_1m",
+        ROUND(AVG("ground_temp_50cm_avg_1m")::NUMERIC, 1) AS "ground_temp_50cm_avg_1m",
+        ROUND(AVG("ground_temp_100cm_avg_1m")::NUMERIC, 1) AS "ground_temp_100cm_avg_1m",
+        ROUND(AVG("wind_direction_inst")::NUMERIC, 0) AS "wind_direction_inst",
+        ROUND(AVG("wind_speed_inst")::NUMERIC, 1) AS "wind_speed_inst",
+        ROUND(AVG("wind_direction_avg_2m")::NUMERIC, 0) AS "wind_direction_avg_2m",
+        ROUND(AVG("wind_direction_max_2m")::NUMERIC, 0) AS "wind_direction_max_2m",
+        ROUND(AVG("wind_direction_min_2m")::NUMERIC, 0) AS "wind_direction_min_2m",
+        ROUND(AVG("wind_speed_avg_2m")::NUMERIC, 1) AS "wind_speed_avg_2m",
+        ROUND(AVG("wind_speed_max_2m")::NUMERIC, 1) AS "wind_speed_max_2m",
+        ROUND(AVG("wind_speed_min_2m")::NUMERIC, 1) AS "wind_speed_min_2m",
+        ROUND(AVG("pressure_avg_1m")::NUMERIC, 1) AS "pressure_avg_1m",
+        ROUND(AVG("pressure_adj_avg_1m")::NUMERIC, 1) AS "pressure_adj_avg_1m"
     FROM
         meteo_data
     WHERE
-        "DT"
+        datetime
 	BETWEEN
 		:start
 	AND
 		:end
     GROUP BY
-        "DT_BIN"
+        "datetime_bin"
     ORDER BY
-        "DT_BIN"
+        "datetime_bin"
 ) t;

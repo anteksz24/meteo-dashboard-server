@@ -24,13 +24,13 @@ query = Query()
 def get_latest_data(limit: int = 1, db: Session = Depends(get_database_session)):
     query_result = db.execute(query.get_query("latest.sql"), {"limit": limit})
     measurements = query.extract_query_result(query_result)
-    return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
+    return measurements
 
 @app.get("/range/")
 def get_data_in_range(start: str, end: str, db: Session = Depends(get_database_session)):
     query_result = db.execute(query.get_query("range.sql"), {"start": start, "end": end})
     measurements = query.extract_query_result(query_result)
-    return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
+    return measurements
 
 @app.get("/average/")
 def get_average_data(interval: int = 60, start: datetime = None, end: datetime = None, db: Session = Depends(get_database_session)):
@@ -40,9 +40,9 @@ def get_average_data(interval: int = 60, start: datetime = None, end: datetime =
         end = datetime.now()
     query_result = db.execute(query.get_query("average.sql"), {"interval": interval, "start": start, "end": end})
     measurements = query.extract_query_result(query_result)
-    return measurements if measurements else Response(status_code = status.HTTP_404_NOT_FOUND)
+    return measurements
 
-@app.post("/post/")
+@app.post("/send/")
 def post_data(received_data: DataRequestSchema, db: Session = Depends(get_database_session)):
     if received_data.password == os.getenv("METEO_PASSWORD"):
         meteo_entry = MeteoDataModel(**received_data.content.model_dump())
