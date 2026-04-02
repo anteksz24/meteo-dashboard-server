@@ -1,4 +1,4 @@
-import requests, sys, json, streamlit as st, pandas as pd, altair as alt
+import streamlit as st, pandas as pd, altair as alt
 from utils.formatter import Formatter
 from utils.constants import MeteoConstants
 from utils.fetcher import Fetcher

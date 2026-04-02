@@ -1,4 +1,4 @@
-import requests, json, sys, pandas as pd, streamlit as st
+import pandas as pd, streamlit as st
 from utils.formatter import Formatter
 from utils.fetcher import Fetcher
 
