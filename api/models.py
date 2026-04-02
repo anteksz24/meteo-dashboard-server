@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import Column, Integer, Float, TIMESTAMP
 from database import Base
 
@@ -37,4 +38,4 @@ class MeteoDataModel(Base):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.PAAVG1M_ADJ = round(self.PAAVG1M + 11.4, 2)
+        self.PAAVG1M_ADJ = round(self.PAAVG1M + float(os.getenv("METEO_PRESSURE_CORRECTION")), 2)

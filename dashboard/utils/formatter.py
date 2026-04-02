@@ -28,21 +28,21 @@ class Formatter:
             units.append([MeteoConstants.CONSTS_INFO[code]["unit"] for code in codes])
         return ValuesWithUnits(values, units)
 
-    def remove_values_from_data_list(self, data, codes):
+    def remove_values_from_data_list(self, data, parameters):
         data_values_removed = copy.deepcopy(data)
         for measurement in range(len(data)):
-            for code in codes:
-                data_values_removed[measurement].pop(code)
+            for parameter in parameters:
+                data_values_removed[measurement].pop(parameter)
         return data_values_removed
 
-    def remove_codes_from_code_list(self, code_list, codes_to_remove):
-        codes_removed = copy.deepcopy(code_list)
-        for code in codes_to_remove:
-            codes_removed.remove(code)
-        return codes_removed
+    def remove_parameters_from_parameter_list(self, parameter_list, parameters_to_remove):
+        parameters_removed = copy.deepcopy(parameter_list)
+        for parameter in parameters_to_remove:
+            parameters_removed.remove(parameter)
+        return parameters_removed
 
-    def get_codes_descriptions(self, codes):
-        if isinstance(codes, list):
-            return [MeteoConstants.CONSTS_INFO[code]["description"] for code in codes]
+    def get_parameters_descriptions(self, parameters):
+        if isinstance(parameters, list):
+            return [MeteoConstants.CONSTS_INFO[parameter]["description"] for parameter in parameters]
         else:
-            return MeteoConstants.CONSTS_INFO[codes]["description"]
+            return MeteoConstants.CONSTS_INFO[parameters]["description"]

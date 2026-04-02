@@ -1,16 +1,18 @@
 import requests, json, sys, pandas as pd, streamlit as st
 from utils.formatter import Formatter
+from utils.fetcher import Fetcher
 
-latest_data = json.loads(requests.get(sys.argv[1] + "/latest/").text)
+fetcher = Fetcher()
 formatter = Formatter()
 
 def render_frame():
-    timestamp = latest_data[0]["datetime"]
-    data = formatter.remove_values_from_data_list(latest_data, ["id", "datetime"])
+    measurements = fetcher.fetch_data_from_api("latest")
+    timestamp = measurements[0]["datetime"]
+    data = formatter.remove_values_from_data_list(measurements, ["id", "datetime"])
 
     dataframe = pd.DataFrame(
         {
-            "Parameter": formatter.get_codes_descriptions(list(data[0].keys())),
+            "Parameter": formatter.get_parameters_descriptions(list(data[0].keys())),
             "Value": formatter.get_values(data, list(data[0].keys())).values_units[0],
         }
     )

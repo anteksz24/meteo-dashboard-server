@@ -1,11 +1,14 @@
-import requests, sys, json, streamlit as st
+import requests, sys, json, streamlit as st, os
 from utils.formatter import Formatter
+from utils.fetcher import Fetcher
 
-latest_data = json.loads(requests.get(sys.argv[1] + "/latest/").text)
-average_data = json.loads(requests.get(sys.argv[1] + "/average/").text)
+fetcher = Fetcher()
 formatter = Formatter()
 
 def render_metrics():
+    latest_data = fetcher.fetch_data_from_api("latest")
+    average_data = fetcher.fetch_data_from_api("average")
+    
     metrics = [
         ("Temperature", "air_temp_avg_1m"),
         ("Humidity", "humidity_avg_1m"),
