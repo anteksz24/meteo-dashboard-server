@@ -4,7 +4,7 @@ from database import Base
 class MeteoDataModel(Base):
     __tablename__ = "meteo_data"
 
-    ID = Column("id", Integer, primary_key = True, index = True)
+    ID = Column("id", Integer, primary_key = True)
     TAAVG1M = Column("air_temp_avg_1m", Float)
     RHAVG1M = Column("humidity_avg_1m", Float)
     DPAVG1M = Column("dewpoint_avg_1m", Float)
