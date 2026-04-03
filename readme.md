@@ -16,7 +16,7 @@ Streamlit frontend is used for displaying measurements in metrics with sparkline
 
 Use `pip install -r requirements.txt` to install required packages for both API and dashboard.
 
-PostgreSQL database is required with a table named `meteo_data`. Create proper columns using database model stored in `MeteoDataModel` class. Using an index is suggested for displaying latest data - create it using `CREATE INDEX meteo_data_datetime_idx ON <schema_name>.meteo_data(datetime DESC)` SQL query.
+PostgreSQL database is required with a table named `meteo_data`. Create proper columns using database model stored in `MeteoDataModel` class. Using an index is suggested for displaying latest data - create it using `CREATE INDEX meteo_data_datetime_idx ON <schema_name>.meteo_data(datetime)` SQL query.
 
 Set environment variables required by FastAPI:
 - `METEO_PASSWORD` for authenticating computer sending measurements to /send endpoint, exact same password should be set on computer,
