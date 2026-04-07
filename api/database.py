@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-engine = create_engine(os.getenv("METEO_DATABASE_URL"))
+engine = create_engine(os.getenv("METEO_DATABASE_URI"))
 
 LocalSession = sessionmaker(
     bind = engine

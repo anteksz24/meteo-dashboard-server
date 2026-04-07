@@ -20,7 +20,7 @@ PostgreSQL database is required with a table named `meteo_data`. Create proper c
 
 Set environment variables required by FastAPI:
 - `METEO_PASSWORD` for authenticating computer sending measurements to /send endpoint, exact same password should be set on computer,
-- `METEO_DATABASE_URL` for URL address to PostgreSQL database, should be in format `postgresql://<username>:<password>@<address>:<port>/<database_name>?options=-c search_path=<schema_name>`, options part is optional if default PostgreSQL schema is used,
+- `METEO_DATABASE_URI` for URI address to PostgreSQL database, should be in format `postgresql://<username>:<password>@<address>:<port>/<database_name>?options=-c search_path=<schema_name>`, options part is optional if default PostgreSQL schema is used,
 - `METEO_PRESSURE_CORRECTION` for float value used to calculate pressure reduced to sea level, e.g. `11.4`.
 
 Set `METEO_API_URL` environment variable for Streamlit dashboard, containing an URL address to API for fetching measurements.
