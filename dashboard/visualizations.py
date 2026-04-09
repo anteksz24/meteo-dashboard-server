@@ -25,9 +25,19 @@ def render_chart(parameters, start_date, end_date, average, interval, y_axis_zer
         alt.Chart(dataframe)
         .mark_line()
         .encode(
-            x = alt.X("datetime:T", title = ""),
-            y = alt.Y("value:Q", title = f"{formatter.get_parameters_descriptions(parameters[0])} ({MeteoConstants.CONSTS_INFO[parameters[0]]["unit"]})" if len(parameters) == 1 else "").scale(zero = y_axis_zero),
-            color = alt.Color("variable:N", title = "Parameters", legend = alt.Legend(orient = "bottom", labelLimit = 0))
+            x = alt.X("datetime:T", 
+                      title = ""),
+            y = alt.Y("value:Q", 
+                      title = f"{formatter.get_parameters_descriptions(parameters[0])} ({MeteoConstants.CONSTS_INFO[parameters[0]]["unit"]})" if len(parameters) == 1 else "")
+            .scale(zero = y_axis_zero),
+            color = alt.Color("variable:N", 
+                              title = "Parameters", 
+                              legend = alt.Legend(orient = "bottom", 
+                                                  labelLimit = 0, 
+                                                  columns = 1))
+        )
+        .properties(
+            height = 400 + 20 * len(parameters)
         )
     )
     
