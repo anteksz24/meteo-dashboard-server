@@ -19,7 +19,6 @@ class Warnings:
         self.average = self.__check_average()
     
     def __str__(self):
-        print(self.latest.latest_datetime)
         return f"""
             **There are warnings available for the system!**\n
             {"Latest data is outdated. Last data update was "
