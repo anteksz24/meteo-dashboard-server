@@ -10,7 +10,7 @@ def render_metrics():
     average_data = fetcher.fetch_data_from_api("average")
     
     metrics = [
-        ("Temperature", "air_temp_avg_1m"),
+        ("Air temperature", "air_temp_avg_1m"),
         ("Humidity", "humidity_avg_1m"),
         ("Temperature at ground surface", "air_temp_surface_avg_1m"),
         ("Atmospheric pressure", "pressure_adj_avg_1m"),
