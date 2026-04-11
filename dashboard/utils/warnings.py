@@ -12,6 +12,7 @@ class AverageMeasurements:
     def __init__(self, average_measurements_incomplete, average_list_length):
         self.average_measurements_incomplete = average_measurements_incomplete
         self.average_list_length = average_list_length
+        self.average_list_length_shortage = 25 - average_list_length
 
 class Warnings:
     def __init__(self):
@@ -20,12 +21,13 @@ class Warnings:
     
     def __str__(self):
         return f"""
-            **There are warnings available for the system!**\n
-            {"Latest data is outdated. Last data update was "
-                f"{self.latest.latest_datetime} of UTC time."
+            **System warning**\n
+            {"Latest data is outdated. It was last updated over an hour ago ("
+                f"{self.latest.latest_datetime})."
             if self.latest.latest_measurements_outdated else ""}\n
-            {"Average charts are incorrect and incomplete. There are "
-                f"{self.average.average_list_length} rows in average data API response out of 25 needed."
+            {"Charts displayed on the Overview page are incomplete. They should display data from last 24 hours and "
+                "consist of 25 points. However, "
+                f"{self.average.average_list_length_shortage} data points are currently missing."
             if self.average.average_measurements_incomplete else ""}
         """
     
