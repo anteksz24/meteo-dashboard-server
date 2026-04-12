@@ -32,7 +32,7 @@ class Warnings:
         """
     
     def check_available_warnings(self):
-        return True if self.latest or self.average else False
+        return True if self.latest.latest_measurements_outdated or self.average.average_measurements_incomplete else False
     
     def __check_latest(self):
         latest_data = fetcher.fetch_data_from_api("latest")
