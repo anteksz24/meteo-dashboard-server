@@ -6,7 +6,7 @@ FROM (
         ROUND(AVG("air_temp_avg_1m")::NUMERIC, 1) AS "air_temp_avg_1m",
         ROUND(AVG("humidity_avg_1m")::NUMERIC, 0) AS "humidity_avg_1m",
         ROUND(AVG("dewpoint_avg_1m")::NUMERIC, 1) AS "dewpoint_avg_1m",
-        ROUND(AVG("precipitation_sum_1h")::NUMERIC, 0) as "precipitation_sum_1h",
+        ROUND(AVG("precipitation_sum_1h")::NUMERIC, 0) AS "precipitation_sum_1h",
         ROUND(AVG("solar_rad_avg_1m")::NUMERIC, 0) AS "solar_rad_avg_1m",
         ROUND(AVG("sunshine_dur_1m")::NUMERIC, 0) AS "sunshine_dur_1m",
         ROUND(AVG("sunshine_dur_sum_1d")::NUMERIC, 0) AS "sunshine_dur_sum_1d",
