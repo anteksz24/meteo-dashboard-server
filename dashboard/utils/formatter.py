@@ -20,12 +20,12 @@ class ValuesWithUnits:
         return values_units_list
 
 class Formatter:
-    def get_values(self, data: list, codes: list):
+    def get_values(self, data: list, parameters: list):
         values = []
         units = []
         for measurement in data:
-            values.append([measurement[code] for code in codes])
-            units.append([MeteoConstants.CONSTS_INFO[code]["unit"] for code in codes])
+            values.append([measurement[parameter] for parameter in parameters])
+            units.append([MeteoConstants.CONSTS_INFO[parameter]["unit"] for parameter in parameters])
         return ValuesWithUnits(values, units)
 
     def remove_values_from_data_list(self, data, parameters):
