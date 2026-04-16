@@ -9,6 +9,9 @@ from datetime import datetime, timedelta
 
 app = FastAPI()
 
+def calculate_reduced_pressure(pressure):
+    return round(pressure + float(os.getenv("METEO_PRESSURE_CORRECTION")), 2)
+
 class Query:
     def get_query(self, filename):
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), f"./queries/{filename}"), "r") as query:
@@ -46,6 +49,7 @@ def get_average_data(interval: int = 60, start: datetime = None, end: datetime =
 def post_data(received_data: DataRequestSchema, db: Session = Depends(get_database_session)):
     if received_data.password == os.getenv("METEO_PASSWORD"):
         meteo_entry = MeteoDataModel(**received_data.content.model_dump())
+        meteo_entry.PAAVG1M_ADJ = calculate_reduced_pressure(meteo_entry.PAAVG1M)
         db.add(meteo_entry)
         db.commit()
         db.refresh(meteo_entry)

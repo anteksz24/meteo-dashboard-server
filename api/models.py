@@ -35,7 +35,3 @@ class MeteoDataModel(Base):
     PAAVG1M = Column("pressure_avg_1m", Float)
     PAAVG1M_ADJ = Column("pressure_adj_avg_1m", Float)
     DT = Column("datetime", TIMESTAMP)
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.PAAVG1M_ADJ = round(self.PAAVG1M + float(os.getenv("METEO_PRESSURE_CORRECTION")), 2)
