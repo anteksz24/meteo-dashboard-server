@@ -1,4 +1,5 @@
 from utils.fetcher import Fetcher
+from utils.formatter import Timestamp
 from datetime import datetime, timezone, timedelta
 
 fetcher = Fetcher()
@@ -23,7 +24,7 @@ class Warnings:
         return f"""
             **System warning**\n
             {"Latest data is outdated. It was last updated over an hour ago ("
-                f"{self.latest.latest_datetime})."
+                f"{Timestamp(self.latest.latest_datetime).timestamp})."
             if self.latest.latest_measurements_outdated else ""}\n
             {"Charts displayed on the Overview page are incomplete. They should display data from last 24 hours and "
                 "consist of 25 points. However, "
