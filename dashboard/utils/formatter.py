@@ -1,5 +1,19 @@
 import copy
 from utils.constants import MeteoConstants
+from dateutil import tz, parser
+from datetime import datetime
+
+class Timestamp:
+    def __init__(self, timestamp):
+        self.timestamp = self.__convert_timestamp_to_local_tz(timestamp)
+
+    @staticmethod
+    def __convert_timestamp_to_local_tz(timestamp):
+        timestamp = parser.parse(timestamp)
+        api_timezone = tz.tzutc()
+        local_timezone = tz.tzlocal()
+        timestamp = timestamp.replace(tzinfo = api_timezone)
+        return str(timestamp.astimezone(tz = local_timezone).replace(tzinfo = None))
 
 class ValuesWithUnits:
     def __init__(self, values, units):

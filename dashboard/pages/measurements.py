@@ -1,5 +1,5 @@
 import pandas as pd, streamlit as st
-from utils.formatter import Formatter
+from utils.formatter import Formatter, Timestamp
 from utils.fetcher import Fetcher
 
 fetcher = Fetcher()
@@ -7,7 +7,7 @@ formatter = Formatter()
 
 def render_frame():
     measurements = fetcher.fetch_data_from_api("latest")
-    timestamp = measurements[0]["datetime"]
+    timestamp = Timestamp(measurements[0]["datetime"]).timestamp
     data = formatter.remove_values_from_data_list(measurements, ["id", "datetime"])
 
     dataframe = pd.DataFrame(
