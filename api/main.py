@@ -5,7 +5,7 @@ from models import MeteoDataModel
 from schemas import DataRequestSchema
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 app = FastAPI()
 
@@ -38,9 +38,9 @@ def get_data_in_range(start: str, end: str, db: Session = Depends(get_database_s
 @app.get("/average/")
 def get_average_data(interval: int = 60, start: datetime = None, end: datetime = None, db: Session = Depends(get_database_session)):
     if not start:
-        start = datetime.now() - timedelta(days = 1)
+        start = datetime.now().astimezone(timezone.utc) - timedelta(days = 1, hours = 1)
     if not end:
-        end = datetime.now()
+        end = datetime.now().astimezone(timezone.utc) - timedelta(hours = 1)
     query_result = db.execute(query.get_query("average.sql"), {"interval": interval, "start": start, "end": end})
     measurements = query.extract_query_result(query_result)
     return measurements
