@@ -23,19 +23,19 @@ class Query:
 
 query = Query()
 
-@app.get("/latest/")
+@app.get("/latest")
 def get_latest_data(limit: int = 1, db: Session = Depends(get_database_session)):
     query_result = db.execute(query.get_query("latest.sql"), {"limit": limit})
     measurements = query.extract_query_result(query_result)
     return measurements
 
-@app.get("/range/")
+@app.get("/range")
 def get_data_in_range(start: str, end: str, db: Session = Depends(get_database_session)):
     query_result = db.execute(query.get_query("range.sql"), {"start": start, "end": end})
     measurements = query.extract_query_result(query_result)
     return measurements
 
-@app.get("/average/")
+@app.get("/average")
 def get_average_data(interval: int = 60, start: datetime = None, end: datetime = None, db: Session = Depends(get_database_session)):
     if not start:
         start = datetime.now().astimezone(timezone.utc) - timedelta(days = 1, hours = 1)
@@ -45,7 +45,7 @@ def get_average_data(interval: int = 60, start: datetime = None, end: datetime =
     measurements = query.extract_query_result(query_result)
     return measurements
 
-@app.post("/send/")
+@app.post("/send")
 def post_data(received_data: DataRequestSchema, db: Session = Depends(get_database_session)):
     if received_data.password == os.getenv("METEO_PASSWORD"):
         meteo_entry = MeteoDataModel(**received_data.content.model_dump())
