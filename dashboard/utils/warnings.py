@@ -1,8 +1,6 @@
-from utils.fetcher import Fetcher
+from utils.fetcher import StaticMeasurementsFetcher
 from utils.formatter import Timestamp
 from datetime import datetime, timezone, timedelta
-
-fetcher = Fetcher()
 
 class LatestMeasurements:
     def __init__(self, latest_measurements_outdated, latest_datetime):
@@ -36,7 +34,7 @@ class Warnings:
         return True if self.latest.latest_measurements_outdated or self.average.average_measurements_incomplete else False
     
     def __check_latest(self):
-        latest_data = fetcher.fetch_data_from_api("latest")
+        latest_data = StaticMeasurementsFetcher(endpoint_name = "latest").measurements
         latest_timestamp = datetime.fromisoformat(latest_data[0]["datetime"]).replace(tzinfo = timezone.utc)
         if latest_timestamp < datetime.now(timezone.utc) - timedelta(hours = 1):
             return LatestMeasurements(True, latest_timestamp)
@@ -44,7 +42,7 @@ class Warnings:
             return LatestMeasurements(False, latest_timestamp)
     
     def __check_average(self):
-        average_data = fetcher.fetch_data_from_api("average")
+        average_data = StaticMeasurementsFetcher(endpoint_name = "average").measurements
         if len(average_data) < 25:
             return AverageMeasurements(True, len(average_data))
         else:

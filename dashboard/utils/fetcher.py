@@ -1,10 +1,24 @@
-import requests, os, json
+import requests, os, json, ast, time
+from websockets.sync.client import connect
 
-class Fetcher:
+class WebSocketConnector:
     def __init__(self):
+        self.websocket_url = os.getenv("METEO_WEBSOCKET_URL")
+
+    async def start_websocket_connection(self):
+        with connect(self.websocket_url) as websocket:
+            while True:
+                measurements = websocket.recv()
+                measurements = ast.literal_eval(measurements[1:-1])
+                time.sleep(1)
+                yield measurements
+
+class StaticMeasurementsFetcher:
+    def __init__(self, endpoint_name: str = None, start_date: str = None, end_date: str = None, interval: int = None):
         self.api_url = os.getenv("METEO_API_URL")
+        self.measurements = self.__fetch_data_from_api(endpoint_name, start_date, end_date, interval)
         
-    def fetch_data_from_api(self, endpoint: str, start_date: str = None, end_date: str = None, interval: int = None):
+    def __fetch_data_from_api(self, endpoint: str, start_date: str = None, end_date: str = None, interval: int = None):
         if endpoint == "latest":
             data = json.loads(requests.get(self.api_url + "/latest").text)
         elif endpoint == "average":

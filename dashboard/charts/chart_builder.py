@@ -10,9 +10,7 @@ class ChartBuilder:
     
     def build_chart(self, config):
         chart = (
-            alt.Chart(self.dataframe_builder.build_dataframe(self.fetcher.fetch_data_from_api(
-                "average" if config.average else "range", config.start_date, config.end_date, config.interval
-            ), config))
+            alt.Chart(self.dataframe_builder.build_dataframe(self.fetcher.measurements, config))
             .mark_line()
             .encode(
                 x = alt.X("datetime:T", 

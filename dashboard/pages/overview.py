@@ -1,14 +1,13 @@
 import streamlit as st
 from utils.formatter import Formatter
-from utils.fetcher import Fetcher
+from utils.fetcher import StaticMeasurementsFetcher
 
-fetcher = Fetcher()
 formatter = Formatter()
 
 def render_metrics():
-    latest_data = fetcher.fetch_data_from_api("latest")
-    average_data = fetcher.fetch_data_from_api("average")
-    
+    latest_data = StaticMeasurementsFetcher(endpoint_name = "latest").measurements
+    average_data = StaticMeasurementsFetcher(endpoint_name = "average").measurements
+
     metrics = [
         ("Air temperature", "air_temp_avg_1m"),
         ("Humidity", "humidity_avg_1m"),

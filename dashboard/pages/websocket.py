@@ -1,15 +1,22 @@
-import os, ast, asyncio, time, streamlit as st
-from websockets.sync.client import connect
+import asyncio, streamlit as st
+from utils.fetcher import WebSocketConnector
+from utils.formatter import Formatter
+from utils.constants import MeteoConstants
 
-websocket_url = os.getenv("METEO_WEBSOCKET_URL")
+async def render_websocket_data():
+    raw_measurements_expander_placeholder = st.empty()
+    metrics_expander_placeholder = st.empty()
+    async for measurement in WebSocketConnector().start_websocket_connection():
+        with raw_measurements_expander_placeholder.expander(label = "Raw WebSocket measurements"):
+            st.write(measurement)
+        with metrics_expander_placeholder.expander(label = "Measurements from WebSocket connection as metrics"):
+            columns = st.columns(3)
+            for measurement_parameter in range(0, len(measurement.keys())):
+                column = columns[measurement_parameter % 3]
+                column.metric(
+                    label = MeteoConstants.CONSTS_INFO[list(measurement.keys())[measurement_parameter]]["description"],
+                    value = Formatter().get_values([measurement], parameters = [list(measurement.keys())[measurement_parameter]]).values_units[0][0],
+                    border = True
+                )
 
-async def display_websocket_data():
-    measurements_placeholder = st.empty()
-    with connect(websocket_url) as websocket:
-        while True:
-            measurements = websocket.recv()
-            measurements = ast.literal_eval(measurements[1:-1])
-            measurements_placeholder.write(measurements)
-            time.sleep(1)
-
-asyncio.run(display_websocket_data())
+asyncio.run(render_websocket_data())

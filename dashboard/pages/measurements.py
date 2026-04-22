@@ -1,12 +1,11 @@
 import pandas as pd, streamlit as st
 from utils.formatter import Formatter, Timestamp
-from utils.fetcher import Fetcher
+from utils.fetcher import StaticMeasurementsFetcher
 
-fetcher = Fetcher()
 formatter = Formatter()
 
 def render_frame():
-    measurements = fetcher.fetch_data_from_api("latest")
+    measurements = StaticMeasurementsFetcher("latest").measurements
     timestamp = Timestamp(measurements[0]["datetime"]).timestamp
     data = formatter.remove_values_from_data_list(measurements, ["id", "datetime"])
 

@@ -1,13 +1,12 @@
 import streamlit as st
 from utils.formatter import Formatter
 from utils.constants import MeteoConstants
-from utils.fetcher import Fetcher
+from utils.fetcher import StaticMeasurementsFetcher
 from charts.chart_builder import ChartBuilder
 from charts.config import ChartConfig
 from datetime import datetime, timedelta
 
 formatter = Formatter()
-fetcher = Fetcher()
 
 def render_chart_ui():
     if "start_date" not in st.session_state:
@@ -35,6 +34,7 @@ def render_chart_ui():
             interval = interval,
             y_axis_zero = y_axis_zero
         )
+        fetcher = StaticMeasurementsFetcher(endpoint_name = "range" if not average else "average", start_date = start_date, end_date = end_date, interval = interval)
         chart = ChartBuilder(fetcher, formatter).build_chart(config)
         st.altair_chart(chart)
 
