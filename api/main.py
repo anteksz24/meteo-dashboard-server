@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, status, Response, Depends
+from fastapi import FastAPI, status, Response, Depends, WebSocket
 from database import get_database_session
 from models import MeteoDataModel
 from schemas import DataRequestSchema
@@ -22,6 +22,25 @@ class Query:
         return data_list
 
 query = Query()
+
+class WebSocketConnectionManager:
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+        self.latest_data = None
+    
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+        
+    async def broadcast(self, data: list):
+        self.latest_data = data
+        for connection in self.active_connections:
+            await connection.send_json(data)
+            
+manager = WebSocketConnectionManager()
 
 @app.get("/latest")
 def get_latest_data(limit: int = 1, db: Session = Depends(get_database_session)):
@@ -46,13 +65,30 @@ def get_average_data(interval: int = 60, start: datetime = None, end: datetime =
     return measurements
 
 @app.post("/send")
-def post_data(received_data: DataRequestSchema, db: Session = Depends(get_database_session)):
+async def post_data(received_data: DataRequestSchema, db: Session = Depends(get_database_session)):
     if received_data.password == os.getenv("METEO_PASSWORD"):
         meteo_entry = MeteoDataModel(**received_data.content.model_dump())
         meteo_entry.PAAVG1M_ADJ = calculate_reduced_pressure(meteo_entry.PAAVG1M)
+        
         db.add(meteo_entry)
         db.commit()
         db.refresh(meteo_entry)
+        
+        latest_query_result = db.execute(query.get_query("latest.sql"), {"limit": 1})
+        extracted_latest_measurements = query.extract_query_result(latest_query_result)
+        await manager.broadcast(extracted_latest_measurements)
         return Response(status_code = status.HTTP_201_CREATED)
     else:
         return Response(status_code = status.HTTP_401_UNAUTHORIZED)
+
+@app.websocket("/websocket")
+async def websocket_connection(websocket: WebSocket, db: Session = Depends(get_database_session)):
+    await manager.connect(websocket)
+    latest_query_result = db.execute(query.get_query("latest.sql"), {"limit": 1})
+    extracted_latest_measurements = query.extract_query_result(latest_query_result)
+    await manager.broadcast(extracted_latest_measurements)
+    try:
+        while True:
+            await websocket.receive_text()
+    except:
+        manager.disconnect(websocket)

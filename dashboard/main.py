@@ -8,11 +8,19 @@ st.set_page_config(
     page_icon = "⛅"
 )
 
-with st.spinner("Loading page..."):
-    pg = st.navigation(
-        [st.Page("pages/overview.py", title = "Overview", icon = ":material/bar_chart:", default = True), 
-         st.Page("pages/measurements.py", title = "Measurements", icon = ":material/thermometer:"),
-         st.Page("pages/visualizations.py", title = "Visualizations", icon = ":material/area_chart:")], position = "top")
-    if warnings.check_available_warnings():
-        st.warning(warnings)
-    pg.run()
+st.markdown("""
+<style>
+[data-testid="stStatusWidget"] {
+    visibility: hidden;
+}
+</style>
+""", unsafe_allow_html = True)
+
+pg = st.navigation(
+    [st.Page("pages/overview.py", title = "Overview", icon = ":material/bar_chart:", default = True), 
+     st.Page("pages/measurements.py", title = "Measurements", icon = ":material/thermometer:"),
+     st.Page("pages/visualizations.py", title = "Visualizations", icon = ":material/area_chart:"),
+     st.Page("pages/websocket.py", title = "WebSocket (experimental)", icon = ":material/cable:")], position = "top")
+if warnings.check_available_warnings():
+    st.warning(warnings)
+pg.run()
