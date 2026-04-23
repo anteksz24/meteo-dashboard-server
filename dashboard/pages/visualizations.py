@@ -26,16 +26,17 @@ def render_chart_ui():
         interval = st.number_input(label = "Interval (minutes)", value = 5, min_value = 1, disabled = not average)
 
     if st.button("Generate chart", disabled = not parameters):
-        config = ChartConfig(
-            parameters = parameters,
-            start_date = start_date,
-            end_date = end_date,
-            average = average,
-            interval = interval,
-            y_axis_zero = y_axis_zero
-        )
-        fetcher = StaticMeasurementsFetcher(endpoint_name = "range" if not average else "average", start_date = start_date, end_date = end_date, interval = interval)
-        chart = ChartBuilder(fetcher, formatter).build_chart(config)
-        st.altair_chart(chart)
+        with st.spinner("Generating chart..."):
+            config = ChartConfig(
+                parameters = parameters,
+                start_date = start_date,
+                end_date = end_date,
+                average = average,
+                interval = interval,
+                y_axis_zero = y_axis_zero
+            )
+            fetcher = StaticMeasurementsFetcher(endpoint_name = "range" if not average else "average", start_date = start_date, end_date = end_date, interval = interval)
+            chart = ChartBuilder(fetcher, formatter).build_chart(config)
+            st.altair_chart(chart)
 
 render_chart_ui()
