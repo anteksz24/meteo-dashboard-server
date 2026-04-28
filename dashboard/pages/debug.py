@@ -3,7 +3,7 @@ from utils.fetcher import WebSocketConnector
 from utils.formatter import Formatter
 from utils.constants import MeteoConstants
 
-async def render_websocket_data():
+async def render_debug_page():
     raw_measurements_expander_placeholder = st.empty()
     metrics_expander_placeholder = st.empty()
     async for measurement in WebSocketConnector().start_websocket_connection():
@@ -19,4 +19,4 @@ async def render_websocket_data():
                     border = True
                 )
 
-asyncio.run(render_websocket_data())
+asyncio.run(render_debug_page())

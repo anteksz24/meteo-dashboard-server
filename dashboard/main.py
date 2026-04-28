@@ -17,10 +17,12 @@ st.markdown("""
 """, unsafe_allow_html = True)
 
 pg = st.navigation(
-    [st.Page("pages/overview.py", title = "Overview", icon = ":material/bar_chart:", default = True), 
-     st.Page("pages/measurements.py", title = "Measurements", icon = ":material/thermometer:"),
-     st.Page("pages/visualizations.py", title = "Visualizations", icon = ":material/area_chart:"),
-     st.Page("pages/websocket.py", title = "WebSocket (experimental)", icon = ":material/cable:")], position = "top")
+    [st.Page(page = "pages/overview.py", title = "Overview", icon = ":material/bar_chart:", default = True),
+     st.Page(page = "pages/measurements.py", title = "Measurements", icon = ":material/thermometer:"),
+     st.Page(page = "pages/visualizations.py", title = "Visualizations", icon = ":material/area_chart:"),
+     st.Page(page = "pages/debug.py", title = "Debug", icon =":material/cable:", visibility = "hidden")], position ="top")
+
 if warnings.check_available_warnings():
     st.warning(warnings)
+
 pg.run()
