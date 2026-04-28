@@ -11,11 +11,11 @@ async def render_websocket_data():
             st.write(measurement)
         with metrics_expander_placeholder.expander(label = "Measurements from WebSocket connection as metrics"):
             columns = st.columns(3)
-            for measurement_parameter in range(0, len(measurement.keys())):
+            for measurement_parameter in range(0, len(measurement[0].keys())):
                 column = columns[measurement_parameter % 3]
                 column.metric(
-                    label = MeteoConstants.CONSTS_INFO[list(measurement.keys())[measurement_parameter]]["description"],
-                    value = Formatter().get_values([measurement], parameters = [list(measurement.keys())[measurement_parameter]]).values_units[0][0],
+                    label = MeteoConstants.CONSTS_INFO[list(measurement[0].keys())[measurement_parameter]]["description"],
+                    value = Formatter().get_values(data = measurement, parameters = [list(measurement[0].keys())[measurement_parameter]]).values_units[0][0],
                     border = True
                 )
 

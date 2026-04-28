@@ -11,7 +11,7 @@ class WebSocketConnector:
                 measurements = websocket.recv()
                 measurements = ast.literal_eval(measurements[1:-1])
                 time.sleep(1)
-                yield measurements
+                yield [measurements]
 
 class StaticMeasurementsFetcher:
     def __init__(self, endpoint_name: str = None, start_date: str = None, end_date: str = None, interval: int = None):
