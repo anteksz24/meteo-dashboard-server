@@ -10,7 +10,7 @@ class ChartBuilder:
 
     def get_y_axis_title(self, parameters):
         if len(parameters) == 1:
-            return f"{self.formatter.get_parameters_descriptions(parameters[0])} ({MeteoConstants.CONSTS_INFO[parameters[0]]["unit"]})"
+            return f"{self.formatter.get_parameters_descriptions(parameters[0])} [{MeteoConstants.CONSTS_INFO[parameters[0]]["unit"]}]"
         else:
             return ""
 
