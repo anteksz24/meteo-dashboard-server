@@ -24,6 +24,15 @@ class ChartBuilder:
                                                                    title = self.get_y_axis_title(config.parameters),
                                                                    scale = alt.Scale(zero = config.y_axis_zero)),
                                                          color = alt.Color(shorthand = "variable:N",
-                                                         title = "Parameters",
-                                                         legend = alt.Legend(orient = "bottom", labelLimit = 0, columns = 1))))
+                                                                           title = "Parameters",
+                                                                           legend = alt.Legend(orient = "bottom",
+                                                                                               labelLimit = 0,
+                                                                                               columns = 1)),
+                                                         tooltip = [alt.Tooltip(title = "Datetime",
+                                                                                shorthand = "datetime:T",
+                                                                                timeUnit = "utcyearmonthdatehoursminutes"),
+                                                                    alt.Tooltip(title = "Parameter",
+                                                                                shorthand = "variable:N"),
+                                                                    alt.Tooltip(title = "Value",
+                                                                                shorthand = "value:Q")]))
         return chart
