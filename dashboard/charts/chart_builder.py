@@ -34,6 +34,5 @@ class ChartBuilder:
                                                                     alt.Tooltip(title = "Parameter",
                                                                                 shorthand = "variable:N"),
                                                                     alt.Tooltip(title = "Value",
-                                                                                shorthand = "value:Q")],
-                                                         strokeWidth = alt.value(5)))
+                                                                                shorthand = "value:Q")]))
         return chart
